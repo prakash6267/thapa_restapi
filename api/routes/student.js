@@ -11,7 +11,7 @@ cloudinary.config({
     api_secret: 'lnwViRinP2udjb8Lw9SVnFN9zMo'
   });
 
-router.get('/',checkAuth,(req,resp,next)=>{
+router.get('/',(req,resp,next)=>{
    Student.find()
    .then(result=>{
     resp.status(200).json({
@@ -26,7 +26,7 @@ router.get('/',checkAuth,(req,resp,next)=>{
    })
 })
 
-router.get('/:id',checkAuth,(req,resp,next)=>{
+router.get('/:id',(req,resp,next)=>{
     console.log(req.params.id)
     Student.findById(req.params.id)
     .then(result=>{
