@@ -42,7 +42,7 @@ router.get('/:id',(req,resp,next)=>{
     })
 })
 
-router.post('/',(req,resp,next)=>{
+router.post('/',checkAuth,(req,resp,next)=>{
 //--------image path ------------
     console.log(req.body)
     const file = req.files.photo;
