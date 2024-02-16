@@ -74,11 +74,41 @@ router.post('/',checkAuth,(req,resp,next)=>{
     })
 })
 
-// delete request
+// delete request two method
 
-router.delete('/:id',checkAuth,(req,resp,next)=>{
-    Student.deleteOne({_id:req.params.id})
+// router.delete('/:id',checkAuth,(req,resp,next)=>{
+//     Student.deleteOne({_id:req.params.id})
+//     .then(result=>{
+//         resp.status(200).json({
+//             message:'student deleted',
+//             result:result
+//         })
+//     })
+//     .catch(err=>{
+//         resp.status(500).json({
+//             error:err
+//         })
+//     })
+// })
+
+router.delete('/',checkAuth,(req,resp,next)=>{
+    //image delete in cloudnery--
+    const imageUrl = req.query.imageUrl
+    const urlArray = imageUrl.split('/')
+    console.log(urlArray)
+    const image = urlArray[urlArray.length-1]
+    console.log(image)
+    const imageName = image.split('.')[0]
+    console.log(imageName)
+
+    //-----------
+    Student.deleteOne({_id:req.query.id})
     .then(result=>{
+        //image delete code
+        cloudinary.uploader.destroy(imageName,(error,result)=>{
+            console.log(error,result)
+        })
+        //-----------
         resp.status(200).json({
             message:'student deleted',
             result:result

@@ -5,9 +5,10 @@ const bodyParser = require('body-parser')
 const studentRoute = require('./api/routes/student')
 const userRoute = require('./api/routes/user')
 const fileUpload = require('express-fileupload')
+const MONGO_URL = process.env.MONGO_URL
 
 
-mongoose.connect('mongodb+srv://prakash:PrakashMongo@prakash.bvaf4xu.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect(MONGO_URL)
 
 mongoose.connection.on('error',err=>{
     console.log('connection failed');
