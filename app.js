@@ -5,18 +5,13 @@ const bodyParser = require('body-parser')
 const studentRoute = require('./api/routes/student')
 const userRoute = require('./api/routes/user')
 const fileUpload = require('express-fileupload')
-const MONGO_URL = 'mongodb+srv://atul:Atul@123@prakash.bvaf4xu.mongodb.net/?retryWrites=true&w=majority'
+const MONGO_URL = process.env.MONGO_URL
 
 
 mongoose.connect(MONGO_URL)
 
-mongoose.connection.on('error',err=>{
-    console.log('connection failed');
-})
-
-mongoose.connection.on('connected',connected=>{
-    console.log('connected with database...')
-})
+.then(() => console.log('Connected to MongoDB'))
+.catch(error => console.error('Connection failed', error))
 
 app.use(fileUpload({
     useTempFiles:true
