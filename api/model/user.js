@@ -7,5 +7,5 @@ userSchema = mongoose.Schema({
     phone:Number,
     userType:String
 })
-
+//
 module.exports = mongoose.model('user',userSchema)
