@@ -1,31 +1,44 @@
-const express = require('express')
+require('dotenv').config()
+const express = require('express');
 const app = express();
-const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
-const studentRoute = require('./api/routes/student')
-const userRoute = require('./api/routes/user')
-const fileUpload = require('express-fileupload')
-const MONGO_URL = process.env.MONGO_URL
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const MONGO_URL = process.env.MONGO_URL 
+const PORT = process.env.SERVER_PORT || 4000
+const userRoute = require('./routes/userR')
+const categoryRoute = require('./routes/categoryR')
+const productRoute = require('./routes/productR')
+const cafeRoute    = require('./routes/cafeR')
+const bannerRoute  = require('./routes/bannerR')
 
 
-mongoose.connect(MONGO_URL)
+app.use(bodyParser.json())
+app.use(morgan('tiny')) 
 
-.then(() => console.log('Connected to MongoDB'))
+app.use(cors())
+app.options('*', cors())
+
+app.use('/api/user', userRoute)
+app.use('/api/category', categoryRoute)
+app.use('/api/product', productRoute)
+app.use('/api/cafe', cafeRoute)
+app.use('/api/banner', bannerRoute)
+// //------------------------
+
+// app.use(fileUpload({
+//     useTempFiles:true
+// }))
+// //-------------------------
+
+
+mongoose.connect(MONGO_URL, {dbName: 'MyCafe',  retryWrites: true, w: 'majority' })
+
+.then( () =>{console.log("Database Connecting is ready...") })
 .catch(error => console.error('Connection failed', error))
 
-app.use(fileUpload({
-    useTempFiles:true
-}))
+app.listen(PORT||4000, () => {
 
-app.use(bodyParser.urlencoded({extended:false}))
-app.use(bodyParser.json())
-
-app.use('/student',studentRoute)
-app.use('/user',userRoute)
-
-app.use((req,resp,next)=>{
-    resp.status(404).json({
-        error:'bad request'
-    })
-})
-module.exports = app
+    console.log("Server is listening on port 4000");
+});
